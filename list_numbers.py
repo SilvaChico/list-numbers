@@ -1,3 +1,6 @@
+import sys
+
+
 def list_numbers(intervals):
     print(list_numbers_str(intervals))
 
@@ -6,20 +9,21 @@ def list_numbers_str(intervals):
     if not intervals.replace(' ', '').isdigit():
         raise InvalidArguments('invalid arguments')
 
-    intervals_list = [*map(int, remove_double_white_spaces(intervals).split())]
-
+    intervals_list = remove_double_white_spaces(intervals).split()
     if is_odd(len(intervals_list)):
         raise OddNumberOfArguments('odd number of arguments')
 
-    intervals = zip(intervals_list[0::2], intervals_list[1::2])
+    intervals_numbers = [*map(int, intervals_list)]
+    interval_pairs = zip(intervals_numbers[0::2], intervals_numbers[1::2])
 
-    list_of_numbers = []
-    for a, b in intervals:
+    numbers = []
+    for a, b in interval_pairs:
         upper_limit, lower_limit = max(a, b), min(a, b)
-        list_of_numbers = union(
-            list_of_numbers, [*range(lower_limit, upper_limit+1)])
+        numbers = union(
+            numbers, [*range(lower_limit, upper_limit+1)]
+        )
 
-    sorted_numbers = sorted(list_of_numbers)
+    sorted_numbers = sorted(numbers)
 
     return " ".join(map(str, sorted_numbers))
 
@@ -42,3 +46,7 @@ class OddNumberOfArguments(Exception):
 
 class InvalidArguments(Exception):
     pass
+
+
+if __name__ == '__main__':
+    list_numbers(sys.argv[1])
