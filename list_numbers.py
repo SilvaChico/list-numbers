@@ -16,20 +16,27 @@ def list_numbers_str(intervals):
     intervals_numbers = [*map(int, intervals_list)]
     interval_pairs = zip(intervals_numbers[0::2], intervals_numbers[1::2])
 
-    numbers = []
-    for a, b in interval_pairs:
+    itervals_union = []
+    for a, b in sorted(interval_pairs):
         upper_limit, lower_limit = max(a, b), min(a, b)
-        numbers = union(
-            numbers, [*range(lower_limit, upper_limit+1)]
-        )
+        itervals_union = union(itervals_union, [lower_limit, upper_limit])
 
-    sorted_numbers = sorted(numbers)
-
-    return " ".join(map(str, sorted_numbers))
+    return " ".join(map(str, generate_numbers_list(itervals_union)))
 
 
-def union(lst1, lst2):
-    return list(set(lst1) | set(lst2))
+def generate_numbers_list(intervals):
+    list_of_numbers = []
+    for a, b in intervals:
+        list_of_numbers += [*range(a, b + 1)]
+    return list_of_numbers
+
+
+def union(lst1, interval):
+    if lst1 and lst1[-1][1] >= interval[0] - 1:
+        lst1[-1][1] = max(lst1[-1][0], interval[1])
+    else:
+        lst1.append([interval[0], interval[1]])
+    return lst1
 
 
 def remove_double_white_spaces(string):
