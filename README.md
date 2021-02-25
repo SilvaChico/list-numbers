@@ -1,4 +1,4 @@
-#List the numbers in a series of intervals
+# List the numbers in a series of intervals
 
 This program lists the numbers in a series of intervals, in ascending order and without number repetition.
 Each interval is defined by a start number, and an end number.
